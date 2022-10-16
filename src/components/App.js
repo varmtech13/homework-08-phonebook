@@ -1,101 +1,71 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import { ContactForm } from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 import { Phonebook, AddBlock, ContactBlock, Title } from './App.styled';
 
-export class App extends Component {
-  state = {
-    contacts: [
-      //{ id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      //{ id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      //{ id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      //{ id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
+import { v4 as uuidv4 } from 'uuid';
+
+export const App = () => {
+  const [contacts, setContacts] = useState(() => {
+    const contacts = localStorage.getItem('contacts');
+    if (contacts) {
+      return JSON.parse(contacts);
+    }
+    return [];
+  });
+  const [filter, setFilter] = useState('');
+
+  const handleFilterChange = event => {
+    setFilter(event.currentTarget.value);
   };
 
-  handleFilterChange = event => {
-    this.setState({ filter: event.currentTarget.value });
-  };
-
-  findName = name => {
-    const { contacts } = this.state;
-    const normalizedName = name.toLowerCase();
-
-    return contacts.find(
-      contact => contact.name.toLowerCase() === normalizedName
-    );
-  };
-
-  addContact = ({ id, name, number }) => {
-    const checkContact = this.findName(name);
-    const { contacts } = this.state;
-
-    if (checkContact) {
-      alert(`${name} is already in contacts`);
+  const addContact = (name, number) => {
+    if (contacts.find(contact => contact.name === name)) {
+      alert(`${name} уже есть в списке ваших контактов`);
       return;
     }
 
-    const lastElement = contacts.length;
     const contact = {
-      id: 'id-' + (lastElement + 1),
+      id: uuidv4(),
       name,
       number,
     };
 
-    this.setState(({ contacts }) => ({
-      contacts: [...contacts, contact],
-    }));
+    setContacts(contacts => [...contacts, contact]);
   };
 
-  handleRemove = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
+  const handleRemove = contactId => {
+    setContacts(contacts.filter(({ id }) => id !== contactId));
   };
 
-  getContacts = () => {
-    const { filter, contacts } = this.state;
+  const getContacts = () => {
     const normalizedFilter = filter.toLowerCase();
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
 
-  componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
+  const visibleContacts = getContacts();
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
-
-  render() {
-    const { filter } = this.state;
-
-    return (
-      <Phonebook>
-        <AddBlock>
-          <Title>Phonebook</Title>
-          <ContactForm onSubmit={this.addContact} />
-        </AddBlock>
-        <ContactBlock>
-          <Title>Contacts</Title>
-          <Filter onChange={this.handleFilterChange} value={filter} />
-          <ContactList
-            contacts={this.getContacts()}
-            onRemoveContact={this.handleRemove}
-          />
-        </ContactBlock>
-      </Phonebook>
-    );
-  }
-}
+  return (
+    <Phonebook>
+      <AddBlock>
+        <Title>Phonebook</Title>
+        <ContactForm addContact={addContact} />
+      </AddBlock>
+      <ContactBlock>
+        <Title>Contacts</Title>
+        <Filter onChange={handleFilterChange} value={filter} />
+        <ContactList
+          contacts={visibleContacts}
+          onRemoveContact={handleRemove}
+        />
+      </ContactBlock>
+    </Phonebook>
+  );
+};
