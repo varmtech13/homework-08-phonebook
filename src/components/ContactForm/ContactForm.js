@@ -1,55 +1,27 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContacts } from '../../redux/contactsSlice';
 import { Form, FormGroup, Label, Input, Button } from './ContactForm.styled';
 
-export const ContactForm = ({ addContact }) => {
-  // state = {
-  //   name: '',
-  //   number: '',
-  // };
+export const ContactForm = () => {
+  const { contacts } = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
 
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-
-  const handleChange = event => {
-    const { name, value } = event.target;
-
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-
-      case 'number':
-        setNumber(value);
-        break;
-
-      default:
-        return;
-    }
-
-    // this.setState({ [name]: value });
-  };
+  const onAddContacts = (name, phone) => dispatch(addContacts(name, phone));
 
   const handleSubmit = e => {
     e.preventDefault();
+    const form = e.target;
 
-    if (!name || !number) {
-      alert('Вы не ввели все контактные данные');
-      return;
+    const isAdded = name =>
+      contacts?.map(contact => contact.name).includes(name);
+
+    if (isAdded(form.elements.name.value)) {
+      return alert(`${form.elements.name.value} is already in contacts`);
+    } else {
+      onAddContacts(form.elements.name.value, form.elements.phone.value);
     }
 
-    if (Number.isNaN(+number)) {
-      alert('Телефонный номер должен содержать только цифры');
-      return;
-    }
-
-    addContact(name, number);
-    reset();
-  };
-
-  const reset = () => {
-    setName('');
-    setNumber('');
+    form.reset();
   };
 
   return (
@@ -58,8 +30,6 @@ export const ContactForm = ({ addContact }) => {
         <Label>Man's name</Label>
         <Input
           type="text"
-          value={name}
-          onChange={handleChange}
           name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
@@ -70,9 +40,7 @@ export const ContactForm = ({ addContact }) => {
         <Label>Phone number</Label>
         <Input
           type="tel"
-          value={number}
-          onChange={handleChange}
-          name="number"
+          name="phone"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
           required
@@ -81,8 +49,4 @@ export const ContactForm = ({ addContact }) => {
       <Button type="submit">Add contact</Button>
     </Form>
   );
-};
-
-ContactForm.propTypes = {
-  addContact: PropTypes.func,
 };

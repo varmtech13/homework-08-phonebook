@@ -1,28 +1,33 @@
-import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { getContacts, getFilter } from 'redux/selectors';
+
 import { ContactListItem } from '../ContactListItem/ContactListItem';
 import { ListBlock, List } from './ContactList.styled';
 
-export const ContactList = ({ contacts, onRemoveContact }) => {
+export const ContactList = () => {
+  const contacts = useSelector(getContacts).contactsReducer;
+  const filter = useSelector(getFilter);
+
+  const getVisibleContacts = (contacts, filter) => {
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase()?.includes(normalizedFilter)
+    );
+  };
+
+  const visibleContacts = getVisibleContacts(contacts, filter);
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
   return (
     <ListBlock>
       <List>
-        {contacts.map((contact, key) => (
-          <ContactListItem
-            key={contact.id}
-            contact={contact}
-            onRemoveContact={() => onRemoveContact(contact.id)}
-          />
+        {visibleContacts.map((contact, key) => (
+          <ContactListItem key={contact.id} contact={contact} />
         ))}
       </List>
     </ListBlock>
   );
-};
-
-ContactList.defaultProps = {
-  contacts: [],
-};
-
-ContactList.propTypes = {
-  contacts: PropTypes.array.isRequired,
-  onRemoveContact: PropTypes.func.isRequired,
 };
