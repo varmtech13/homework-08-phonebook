@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { FormGroup, Label, Input } from './Filter.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStatusFilter } from '../../redux/filtersSlice';
+import { setStatusFilter } from '../../redux/contactsSlice';
 import { getFilter } from 'redux/selectors';
 
 export const Filter = () => {
