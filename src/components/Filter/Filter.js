@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import { FormGroup, Label, Input } from './Filter.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStatusFilter } from '../../redux/contactsSlice';
-import { getFilter } from 'redux/selectors';
+import { selectFilter } from 'redux/selectors';
 
 export const Filter = () => {
   const dispatch = useDispatch();
-  const filter = useSelector(getFilter);
+  const filter = useSelector(selectFilter);
 
   const handleChangeFilter = filter => dispatch(setStatusFilter(filter));
   return (

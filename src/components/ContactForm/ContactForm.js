@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
-import { addContacts } from '../../redux/contactsSlice';
+import { getVisibleContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
 import { Form, FormGroup, Label, Input, Button } from './ContactForm.styled';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const contacts = useSelector(getContacts).contactsReducer;
+  const contacts = useSelector(getVisibleContacts);
   const dispatch = useDispatch();
 
-  const onAddContacts = (name, phone) => dispatch(addContacts(name, phone));
+  const onAddContacts = (name, phone) =>
+    dispatch(addContact({ name: name, phone: phone }));
 
   const handleChange = event => {
     const { name, value } = event.target;
