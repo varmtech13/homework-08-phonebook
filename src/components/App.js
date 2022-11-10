@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectError, selectIsLoading } from 'redux/selectors';
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/operations';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -21,10 +22,19 @@ export const App = () => {
         <Title>Phonebook</Title>
         <ContactForm />
       </AddBlock>
-      {isLoading && !error && <b>Request in progress...</b>}
       <ContactBlock>
         <Title>Contacts</Title>
         <Filter />
+        {isLoading && !error && (
+          <b>
+            Request in progress...
+            <AiOutlineLoading3Quarters
+              size="22"
+              color="#E21C1C"
+              marginRight="10px"
+            />
+          </b>
+        )}
         <ContactList />
       </ContactBlock>
     </Phonebook>

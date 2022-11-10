@@ -13,7 +13,7 @@ export const getVisibleContacts = createSelector(
   (contacts, selectFilter) => {
     console.log('Calculating visible tasks');
     return contacts.filter(contact =>
-      contact.name.toLowerCase()?.includes(selectFilter.toLowerCase())
+      contact.name.toLowerCase().includes(selectFilter.toLowerCase())
     );
   }
 );
