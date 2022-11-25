@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/homework-08-phonebook/static/css/main.7acaea2f.css",
-    "main.js": "/homework-08-phonebook/static/js/main.ea8f71c9.js",
+    "main.js": "/homework-08-phonebook/static/js/main.84510c54.js",
     "static/js/266.cfc16528.chunk.js": "/homework-08-phonebook/static/js/266.cfc16528.chunk.js",
     "static/js/139.20f521de.chunk.js": "/homework-08-phonebook/static/js/139.20f521de.chunk.js",
     "static/js/960.97e5e9e8.chunk.js": "/homework-08-phonebook/static/js/960.97e5e9e8.chunk.js",
@@ -13,7 +13,7 @@
     "static/media/1546008317_feature_image.png": "/homework-08-phonebook/static/media/1546008317_feature_image.0492eddbeeb18677c70d.png",
     "index.html": "/homework-08-phonebook/index.html",
     "main.7acaea2f.css.map": "/homework-08-phonebook/static/css/main.7acaea2f.css.map",
-    "main.ea8f71c9.js.map": "/homework-08-phonebook/static/js/main.ea8f71c9.js.map",
+    "main.84510c54.js.map": "/homework-08-phonebook/static/js/main.84510c54.js.map",
     "266.cfc16528.chunk.js.map": "/homework-08-phonebook/static/js/266.cfc16528.chunk.js.map",
     "139.20f521de.chunk.js.map": "/homework-08-phonebook/static/js/139.20f521de.chunk.js.map",
     "960.97e5e9e8.chunk.js.map": "/homework-08-phonebook/static/js/960.97e5e9e8.chunk.js.map",
@@ -24,6 +24,6 @@
   },
   "entrypoints": [
     "static/css/main.7acaea2f.css",
-    "static/js/main.ea8f71c9.js"
+    "static/js/main.84510c54.js"
   ]
 }
