@@ -1,8 +1,15 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getVisibleContacts } from 'redux/selectors';
-import { addContact } from 'redux/operations';
-import { Form, FormGroup, Label, Input, Button } from './ContactForm.styled';
+import { getVisibleContacts } from 'redux/contacts/selectors';
+import { addContact } from 'redux/contacts/operations';
+import {
+  Button,
+  Card,
+  CardBody,
+  FormControl,
+  FormLabel,
+  Input,
+} from '@chakra-ui/react';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
@@ -11,7 +18,7 @@ export const ContactForm = () => {
   const dispatch = useDispatch();
 
   const onAddContacts = (name, phone) =>
-    dispatch(addContact({ name: name, phone: phone }));
+    dispatch(addContact({ name: name, number: phone }));
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -59,32 +66,42 @@ export const ContactForm = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormGroup>
-        <Label>Man's name</Label>
-        <Input
-          type="text"
-          value={name}
-          onChange={handleChange}
-          name="name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-          required
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label>Phone number</Label>
-        <Input
-          type="tel"
-          value={phone}
-          onChange={handleChange}
-          name="phone"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-          required
-        />
-      </FormGroup>
-      <Button type="submit">Add contact</Button>
-    </Form>
+    <Card color={'green.500'} w={'md'}>
+      <CardBody>
+        <form onSubmit={handleSubmit}>
+          <FormControl mb={8}>
+            <FormLabel>Имя</FormLabel>
+            <Input
+              type="text"
+              fontWeight={600}
+              color={'green.700'}
+              value={name}
+              onChange={handleChange}
+              name="name"
+              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
+              required
+            />
+          </FormControl>
+          <FormControl mb={8}>
+            <FormLabel>Номер телефона</FormLabel>
+            <Input
+              type="tel"
+              fontWeight={600}
+              color={'green.700'}
+              value={phone}
+              onChange={handleChange}
+              name="phone"
+              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+              title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+              required
+            />
+          </FormControl>
+          <Button type="submit" colorScheme={'green'}>
+            Сохранить контакт
+          </Button>
+        </form>
+      </CardBody>
+    </Card>
   );
 };

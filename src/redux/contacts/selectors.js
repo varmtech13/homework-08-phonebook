@@ -11,7 +11,7 @@ export const selectFilter = state => state.filters;
 export const getVisibleContacts = createSelector(
   [selectContacts, selectFilter],
   (contacts, selectFilter) => {
-    console.log('Calculating visible tasks');
+    console.log('Calculating visible contacts');
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(selectFilter.toLowerCase())
     );

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { FormGroup, Label, Input } from './Filter.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStatusFilter } from '../../redux/contactsSlice';
-import { selectFilter } from 'redux/selectors';
+import { setStatusFilter } from '../../redux/contacts/slice';
+import { selectFilter } from 'redux/contacts/selectors';
+import { FormControl, Heading, Input } from '@chakra-ui/react';
 
 export const Filter = () => {
   const dispatch = useDispatch();
@@ -10,16 +10,18 @@ export const Filter = () => {
 
   const handleChangeFilter = filter => dispatch(setStatusFilter(filter));
   return (
-    <FormGroup>
-      <Label>Find contact by name</Label>
+    <FormControl mb={10} borderBottom={'1px'} pb={2}>
+      <Heading as={'h6'} size="md" mb={2}>
+        Найти контакт по имени
+      </Heading>
       <Input
         type="text"
         value={filter}
         onChange={e => handleChangeFilter(e.target.value)}
         name="filter"
-        placeholder="Enter name"
+        placeholder="Введите имя"
       />
-    </FormGroup>
+    </FormControl>
   );
 };
 
